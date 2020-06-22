@@ -1,8 +1,11 @@
-
-    
 const salesforcePackage = require("../");
-  
-salesforcePackage({
-    inputDatasetName: 'salesforce',
-    inputDatasetSchema: 'salesforce_playground'
-})
+
+const salesforceModel = salesforcePackage({
+  salesforceSchema: "salesforce_playground",
+  // accountsTableName: 'Account',
+  // opportunitiesTableName: 'Opportunity',
+  defaultConfig: {
+    tags: ["salesforce"],
+    type: "view"
+  },
+});
