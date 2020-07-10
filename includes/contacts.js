@@ -3,7 +3,7 @@ module.exports = (params) => {
     description: "Base model for Salesforce Contacts object",
     columns: {
       contact_id: "Unique ID for Contact object.",
-      account_id: "Account ID for object, Foreignkey"
+      account_id: "Account ID for object, Foreignkey",
       owner_id: "ID of the Salesperson/rep"
     },
     assertions: {

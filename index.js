@@ -9,9 +9,11 @@ const salesforceContacts = require("./includes/contacts");
 const reportPipelinebyRep = require("./includes/reports/pipeline_by_rep");
 
 module.exports = (params) => {
+/// assumes Stitch, but if Fivetran do this.
+
 
   params = {
-    salesforceSchema: 'salesforce', // schema that the audit logs are written into
+    salesforceSchema: 'salesforce', // schema that the Salesforce table are written into by ELT vendor
     accountsTableName: 'Account', // accounts table name; 
     opportunitiesTableName: 'Opportunity', // opportunities table name; 
     leadsTableName: 'Lead', // leads table name; 
