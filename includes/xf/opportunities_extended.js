@@ -1,7 +1,7 @@
 // TODO: opportunity.stage_names should be fetched from package config
 
 module.exports = (params) => {
-    return publish("salesforce_opportunities_extended_xf", {
+    return publish("salesforce_opportunities_extended", {
         description: "Intermediate table that combines opportunities, accounts and user data",
         type: "view",
         columns: {
@@ -10,19 +10,19 @@ module.exports = (params) => {
         ...params.defaultConfig
     }).query(ctx => `
 
-    with opportunitites as (
+    with opportunity as (
         select *
         from ${ctx.ref("salesforce_opportunities")}
     
     ),
-    
-    users as (
+
+    user as (
         select *
         from ${ctx.ref("salesforce_users")}
     
     ),
 
-    accounts as (
+    account as (
         select *
         from ${ctx.ref("salesforce_accounts")}
     
@@ -31,19 +31,20 @@ module.exports = (params) => {
     add_fields as (
 
         select 
-            opportunities.*
-            accounts.*,
-            opportunity_owner.user_id as opportunity_owner_id, 
-            opportunity_owner.user_id as opportunity_owner_name
+            opportunity.*,
+            account.* except (account_id),
+            user.user_id as opportunity_user_id, 
+            user.name as opportunity_owner_name,
             case
                 when opportunity.is_won then 'Won'
                 when not opportunity.is_won and opportunity.is_closed then 'Lost'
                 when not opportunity.is_closed and lower(opportunity.forecast_category) in ('pipeline','forecast','bestcase') then 'Pipeline'
                 else 'Other'
             end as status
-        from opportunitites
-        left join account on opportunities.opportunity_id = account.account_id
-        left join users on users.user_id = opportunities.opportunity_id
+                  case when is_created_this_month then amount else 0 end as created_amount_this_month
+        from opportunity
+        left join account on opportunity.opportunity_id = account.account_id
+        left join user on user.user_id = opportunity.owner_id
 
     )
     
