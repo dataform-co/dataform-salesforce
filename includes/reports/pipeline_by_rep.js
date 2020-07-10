@@ -14,13 +14,14 @@ module.exports = (params) => {
     ...params.defaultConfig
   }).query(ctx => `
 
-    with opportunitites as (
+    with opportunity as (
+
         select *
         from ${ctx.ref("salesforce_opportunities")}
     
     ),
-    
-    users as (
+
+    user as (
         select *
         from ${ctx.ref("salesforce_users")}
     
@@ -35,11 +36,13 @@ module.exports = (params) => {
 
             -- measures
             sum(amount)        as opportunity_amount
-        from opportunities o 
-        join users u
+        from opportunity o 
+        join user u
         on u.user_id = o.owner_id
-        and o.stage_name in ('Evaluation', 'Contract Negotiation', 'Closed Won') 
-        and type = 'New Business'
+
+        where o.stage_name in ('Evaluation', 'Contract Negotiation', 'Closed Won') 
+        and o.type = 'New Business'
+        group by 1,2,3
     )
     
     select * 

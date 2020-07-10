@@ -37,7 +37,7 @@ module.exports = (params) => {
             forecastcategory        as forecast_category,
             stagename               as stage_name,
             amount, 
-            type                    as department,
+            type,
             iswon                   as is_won,
             isclosed                as is_closed,
 

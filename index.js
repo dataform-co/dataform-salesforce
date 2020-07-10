@@ -1,12 +1,16 @@
 // Base Salesforce tables
-const salesforceAccounts = require("./includes/accounts");
-const salesforceOpportunities = require("./includes/opportunities");
-const salesforceLeads = require("./includes/leads");
-const salesforceUsers = require("./includes/users");
-const salesforceContacts = require("./includes/contacts");
+const salesforceAccounts = require("./includes/base/accounts");
+const salesforceOpportunities = require("./includes/base/opportunities");
+const salesforceLeads = require("./includes/base/leads");
+const salesforceUsers = require("./includes/base/users");
+const salesforceContacts = require("./includes/base/contacts");
+
+// Intermediate Transforms 
+const xfOpportunitiesExtended = require("./includes/xf/opportunities_extended");
 
 // Reports
 const reportPipelinebyRep = require("./includes/reports/pipeline_by_rep");
+const reportSalesSnapshot = require("./includes/reports/sales_snapshot");
 
 module.exports = (params) => {
 /// assumes Stitch, but if Fivetran do this.
@@ -74,7 +78,9 @@ module.exports = (params) => {
     salesforceOpportunities: salesforceOpportunities(params),
     salesforceLeads: salesforceLeads(params),
     salesforceUsers: salesforceUsers(params),
-    // salesforceContacts: salesforceContacts(params),
-    reportPipelinebyRep: reportPipelinebyRep(params)
+    xfOpportunitiesExtended: xfOpportunitiesExtended(params),
+    salesforceContacts: salesforceContacts(params),
+    reportPipelinebyRep: reportPipelinebyRep(params),
+    reportSalesSnapshot: reportSalesSnapshot(params),
   }
 }
