@@ -1,4 +1,5 @@
 {
+    "name": "dataform-salesforce",
     "dependencies": {
         "@dataform/core": "1.6.12"
     }
